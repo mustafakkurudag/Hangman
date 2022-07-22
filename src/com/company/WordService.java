@@ -19,8 +19,8 @@ public class WordService {
     /**
      *  Veritabanından kelimeler bir listeye alınır.
      */
-    public List<Word> fetchWords() {
-        List<Word> words = new ArrayList<>();
+    public List<String> fetchWords() {
+        List<String> words = new ArrayList<>();
 
         try {
             newUrl = new URL("https://raw.githubusercontent.com/StarlangSoftware/Dictionary/master/src/main/resources/turkish_dictionary.txt");
@@ -31,7 +31,7 @@ public class WordService {
             String myWord;
             while ((myWord = in.readLine()) != null) {
                 word.setWord(myWord.split(" ")[0]);
-                words.add(word);
+                words.add(word.getWord());
             }
 
             in.close();

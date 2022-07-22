@@ -57,6 +57,7 @@ public class DatabaseHelper {
      */
     private void addWords() {
         WordService service = new WordService();
+        List<String> words = new ArrayList<>();
 
         try {
             Connection connection = DriverManager.getConnection(URL+DBNAME, USER, PASSWORD);
@@ -64,12 +65,12 @@ public class DatabaseHelper {
             String sql = "INSERT INTO " + DBNAME + ".turkish VALUES (?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            List<Word> words = service.fetchWords();
+            words = service.fetchWords();
             int i = 1;
 
-            for (Word wrd: words) {
+            for (String wrd: words) {
                 statement.setInt(1, i);
-                statement.setString(2, wrd.getWord());
+                statement.setString(2, wrd);
                 i++;
                 statement.executeUpdate();
             }
