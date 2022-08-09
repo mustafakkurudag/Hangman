@@ -57,15 +57,16 @@ public class DatabaseHelper {
      */
     private void addWords() {
         WordService service = new WordService();
-        List<String> words = new ArrayList<>();
+        List<String> words;
 
         try {
+            words = service.fetchWordsFromFile();
+
             Connection connection = DriverManager.getConnection(URL+DBNAME, USER, PASSWORD);
 
             String sql = "INSERT INTO " + DBNAME + ".turkish VALUES (?,?)";
             PreparedStatement statement = connection.prepareStatement(sql);
 
-            words = service.fetchWords();
             int i = 1;
 
             for (String wrd: words) {
@@ -145,5 +146,29 @@ public class DatabaseHelper {
         }
 
         return randWord;
+    }
+
+    public boolean isFull() {
+        try {
+            Connection connection = DriverManager.getConnection(URL+DBNAME,USER,PASSWORD);
+            Statement statement = null;
+            ResultSet resultSet = null;
+
+            String sql = "SELECT * FROM " + DBNAME;
+            statement = connection.prepareStatement(sql);
+
+            resultSet = statement.getResultSet();
+            System.out.println(resultSet);
+            if (resultSet == null) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

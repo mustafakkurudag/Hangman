@@ -1,6 +1,8 @@
 package com.company;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,26 +19,24 @@ public class WordService {
     private DatabaseHelper helper = new DatabaseHelper();
 
     /**
-     *  Veritabanından kelimeler bir listeye alınır.
+     * Kelimeler dosyadan listeye alınır.
      */
-    public List<String> fetchWords() {
+    public List<String> fetchWordsFromFile() {
         List<String> words = new ArrayList<>();
 
         try {
-            newUrl = new URL("https://raw.githubusercontent.com/StarlangSoftware/Dictionary/master/src/main/resources/turkish_dictionary.txt");
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(newUrl.openStream())
-            );
-
-            String myWord;
-            while ((myWord = in.readLine()) != null) {
+            URL path = WordService.class.getResource("words.txt");
+            File file = new File(path.getFile());
+            Scanner reader = new Scanner(file);
+            while (reader.hasNextLine()) {
+                String myWord = reader.nextLine();
                 word.setWord(myWord.split(" ")[0]);
                 words.add(word.getWord());
             }
 
-            in.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
         return words;

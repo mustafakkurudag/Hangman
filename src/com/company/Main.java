@@ -12,6 +12,11 @@ public class Main {
          *   helper.createDatabase();
          */
 
+        DatabaseHelper helper = new DatabaseHelper();
+        if (helper.isFull()) {
+            helper.createDatabase();
+        }
+
         /**
          *  Oyunu başlatır
          */
